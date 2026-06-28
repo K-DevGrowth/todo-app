@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createTodo, deleteTodo, getTodos } from "../requests";
+import { createTodo, deleteTodo, getTodos, updatedTodo } from "../requests";
 
 export const useTodos = () => {
   const queryClient = useQueryClient();
@@ -24,11 +24,20 @@ export const useTodos = () => {
     },
   });
 
+  const updateTodoMutation = useMutation({
+    mutationFn: updatedTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+
   return {
     data: result.data,
     isPending: result.isPending,
     error: result.error,
     addTodo: (name) => newTodoMutation.mutate({ name, completed: false }),
     deleteTodo: (id) => deleteTodoMutation.mutate(id),
+    toggleCompletedTodo: (id, completed) =>
+      updateTodoMutation.mutate({ id, updatedTodo: { completed: !completed } }),
   };
 };

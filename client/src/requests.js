@@ -35,3 +35,19 @@ export const deleteTodo = async (id) => {
     throw new Error("Failed to delete todo");
   }
 };
+
+export const updatedTodo = async ({ id, updatedTodo }) => {
+  const options = {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedTodo),
+  };
+
+  const res = await fetch(`${baseUrl}/${id}`, options);
+
+  if (!res.ok) {
+    throw new Error("Failed to update todo");
+  }
+
+  return res.json();
+};

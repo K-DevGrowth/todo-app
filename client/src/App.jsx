@@ -9,6 +9,7 @@ const App = () => {
     error,
     addTodo: addTodoToServer,
     deleteTodo: deleteTodoFromServer,
+    toggleCompletedTodo,
   } = useTodos();
 
   const addTodo = async (e) => {
@@ -38,7 +39,11 @@ const App = () => {
           </button>
         </div>
         <TodoForm handleSubmit={addTodo} />
-        <TodoList todos={data} onDelete={deleteTodoFromServer} />
+        <TodoList
+          todos={data}
+          onTogglableCompleted={toggleCompletedTodo}
+          onDelete={deleteTodoFromServer}
+        />
       </div>
     </main>
   );

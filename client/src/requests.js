@@ -25,3 +25,13 @@ export const createTodo = async (newTodo) => {
 
   return res.json();
 };
+
+export const deleteTodo = async (id) => {
+  const res = await fetch(`${baseUrl}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete todo");
+  }
+};

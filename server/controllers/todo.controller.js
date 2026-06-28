@@ -42,4 +42,12 @@ export const createTodo = async (req, res, next) => {
 
 export const updatedTodo = async (req, res, next) => {};
 
-export const deleteTodo = async (req, res, next) => {};
+export const deleteTodo = async (req, res, next) => {
+  const todo = await Todo.findByIdAndDelete(req.params.id);
+
+  if (!todo) {
+    throw new Error("Todo not found");
+  }
+
+  res.status(204).end();
+};

@@ -58,3 +58,8 @@ export const deleteTodo = async (req, res, next) => {
 
   res.status(204).end();
 };
+
+export const deleteTodos = async (req, res, next) => {
+  const todos = await Todo.deleteMany({ completed: true });
+  res.status(204).end();
+};

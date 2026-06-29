@@ -1,8 +1,26 @@
+import { useState } from "react";
+
 const TodoList = ({ todos, onDelete, onTogglableCompleted }) => {
+  const [filter, setFilter] = useState("All");
+
+  const filteredList = todos.data.filter((todo) => {
+    if (filter === "Active") return !todo.completed;
+    if (filter === "Completed") return todo.completed;
+    return true;
+  });
+
+  const handleClearCompleted = () => {
+    const completedTodo = todos.data.filter((t) => t.completed === true);
+    
+    completedTodo.map((todo) => {
+      onDelete(todo._id);
+    });
+  };
+
   return (
     <div className="w-full max-w-100 mt-4 shadow-xl">
       <div>
-        {todos.data.map((todo) => (
+        {filteredList.map((todo) => (
           <div
             key={todo._id}
             className="flex justify-between items-center border-b border-Gray-300 px-4 py-3 bg-white"
@@ -10,6 +28,7 @@ const TodoList = ({ todos, onDelete, onTogglableCompleted }) => {
             <div className="flex items-center gap-4">
               <input
                 type="checkbox"
+                className="cursor-pointer"
                 checked={todo.completed}
                 onChange={() => onTogglableCompleted(todo._id, todo.completed)}
               />
@@ -19,7 +38,11 @@ const TodoList = ({ todos, onDelete, onTogglableCompleted }) => {
                 {todo.name}
               </p>
             </div>
-            <button type="button" onClick={() => onDelete(todo._id)}>
+            <button
+              type="button"
+              onClick={() => onDelete(todo._id)}
+              className="cursor-pointer"
+            >
               <img src="./images/icon-cross.svg" alt="" />
             </button>
           </div>
@@ -29,12 +52,25 @@ const TodoList = ({ todos, onDelete, onTogglableCompleted }) => {
         <p>
           {todos.data.filter((t) => t.completed === false).length} items left
         </p>
-        <div className="*:px-1">
-          <button type="button">All</button>
-          <button type="button">Active</button>
-          <button type="button">Completed</button>
+        <div className="*:px-1 *:cursor-pointer">
+          {["All", "Active", "Completed"].map((item) => (
+            <button
+              type="button"
+              key={item}
+              onClick={() => setFilter(item)}
+              className={`${filter === item ? "text-Blue-500" : "hover:text-Navy-850"}`}
+            >
+              {item}
+            </button>
+          ))}
         </div>
-        <button>Clear Completed</button>
+        <button
+          type="button"
+          className="hover:text-Navy-850"
+          onClick={handleClearCompleted}
+        >
+          Clear Completed
+        </button>
       </div>
     </div>
   );

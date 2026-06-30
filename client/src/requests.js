@@ -51,3 +51,27 @@ export const updatedTodo = async ({ id, updatedTodo }) => {
 
   return res.json();
 };
+
+export const deleteTodos = async () => {
+  const res = await fetch(baseUrl, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete todos");
+  }
+};
+
+export const reorders = async (id, newOrder) => {
+  const res = await fetch(`${baseUrl}/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ order: newOrder }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to reorders todos");
+  }
+
+  return res.json();
+};

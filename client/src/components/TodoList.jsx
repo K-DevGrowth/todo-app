@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-const TodoList = ({ todos, onDelete, onTogglableCompleted }) => {
+const TodoList = ({
+  todos,
+  onDelete,
+  onTogglableCompleted,
+  onCompletedDelete,
+  onReorderTodoMutation,
+  darkMode,
+}) => {
   const [filter, setFilter] = useState("All");
+  const dragIndex = useRef();
 
   const filteredList = todos.data.filter((todo) => {
     if (filter === "Active") return !todo.completed;
@@ -9,21 +17,32 @@ const TodoList = ({ todos, onDelete, onTogglableCompleted }) => {
     return true;
   });
 
+  const handleDragStart = (index) => {
+    dragIndex.current = index;
+  };
+
+  const handleDrop = (dropIndex) => {
+    const newItems = [...filteredList];
+    const [moved] = newItems.splice(dragIndex.current, 1);
+    newItems.splice(dropIndex, 0, moved);
+    onReorderTodoMutation(newItems);
+  };
+
   const handleClearCompleted = () => {
-    const completedTodo = todos.data.filter((t) => t.completed === true);
-    
-    completedTodo.map((todo) => {
-      onDelete(todo._id);
-    });
+    onCompletedDelete();
   };
 
   return (
     <div className="w-full max-w-100 mt-4 shadow-xl">
       <div>
-        {filteredList.map((todo) => (
+        {filteredList.map((todo, index) => (
           <div
+            onDragStart={() => handleDragStart(index)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleDrop(index)}
+            draggable={true}
             key={todo._id}
-            className="flex justify-between items-center border-b border-Gray-300 px-4 py-3 bg-white"
+            className={`flex justify-between items-center border-b border-Gray-300 px-4 py-3 ${darkMode ? "bg-Navy-900 text-white" : "bg-white"}`}
           >
             <div className="flex items-center gap-4">
               <input
@@ -48,7 +67,9 @@ const TodoList = ({ todos, onDelete, onTogglableCompleted }) => {
           </div>
         ))}
       </div>
-      <div className="text-[12px] text-Gray-600 bg-white font-medium flex justify-between items-center py-2 px-3">
+      <div
+        className={`text-[12px] text-Gray-600 font-medium flex justify-between items-center py-2 px-3 ${darkMode ? "bg-Navy-900" : "bg-white"}`}
+      >
         <p>
           {todos.data.filter((t) => t.completed === false).length} items left
         </p>

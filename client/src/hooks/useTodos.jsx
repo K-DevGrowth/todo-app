@@ -1,5 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createTodo, deleteTodo, getTodos, updatedTodo } from "../requests";
+import {
+  createTodo,
+  deleteTodo,
+  deleteTodos,
+  getTodos,
+  reorders,
+  updatedTodo,
+} from "../requests";
 
 export const useTodos = () => {
   const queryClient = useQueryClient();
@@ -31,6 +38,20 @@ export const useTodos = () => {
     },
   });
 
+  const deletedTodosMutation = useMutation({
+    mutationFn: deleteTodos,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+
+  const reorderMutation = useMutation({
+    mutationFn: reorders,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+
   return {
     data: result.data,
     isPending: result.isPending,
@@ -39,5 +60,7 @@ export const useTodos = () => {
     deleteTodo: (id) => deleteTodoMutation.mutate(id),
     toggleCompletedTodo: (id, completed) =>
       updateTodoMutation.mutate({ id, updatedTodo: { completed: !completed } }),
+    deleteCompletedTodos: () => deletedTodosMutation.mutate(),
+    reorderTodoMutation: (newOrder) => reorderMutation.mutate(newOrder),
   };
 };

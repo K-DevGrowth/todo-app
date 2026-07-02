@@ -72,20 +72,20 @@ const TodoList = ({
             key={todo._id}
             className={`flex justify-between items-center border-b border-Gray-300 px-4 py-3 ${darkMode ? "bg-Navy-900 text-white" : "bg-white"}`}
           >
-            <div className="flex items-center gap-x-2">
-              <label htmlFor="todo"></label>
+            <div className="flex items-center gap-x-4">
               <input
                 type="checkbox"
-                id="todo"
+                id={`todo-${todo._id}`}
                 className="cursor-pointer"
                 checked={todo.completed}
                 onChange={() => onTogglableCompleted(todo._id, todo.completed)}
               />
-              <p
+              <label
+                htmlFor={`todo-${todo._id}`}
                 className={`${todo.completed ? "line-through text-Gray-300 " : ""}`}
               >
                 {todo.name}
-              </p>
+              </label>
             </div>
             <button
               type="button"

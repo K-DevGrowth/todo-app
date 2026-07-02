@@ -35,7 +35,6 @@ Users should be able to:
 
 ![image](./client/public/images/screenshot.png)
 
-
 ### Links
 
 - Solution URL: [Add solution URL here](https://www.frontendmentor.io/solutions/todo-app-H0UAiARFO5)

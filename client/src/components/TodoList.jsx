@@ -11,7 +11,7 @@ const TodoList = ({
   const [filter, setFilter] = useState("All");
   const dragIndex = useRef();
 
-  const filteredList = todos.data.filter((todo) => {
+  const filteredList = (todos?.data || []).filter((todo) => {
     if (filter === "Active") return !todo.completed;
     if (filter === "Completed") return todo.completed;
     return true;
@@ -72,9 +72,11 @@ const TodoList = ({
             key={todo._id}
             className={`flex justify-between items-center border-b border-Gray-300 px-4 py-3 ${darkMode ? "bg-Navy-900 text-white" : "bg-white"}`}
           >
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-x-2">
+              <label htmlFor="todo"></label>
               <input
                 type="checkbox"
+                id="todo"
                 className="cursor-pointer"
                 checked={todo.completed}
                 onChange={() => onTogglableCompleted(todo._id, todo.completed)}
@@ -89,6 +91,7 @@ const TodoList = ({
               type="button"
               onClick={() => onDelete(todo._id)}
               className="cursor-pointer"
+              aria-label={`Delete "${todo.name}"`}
             >
               <img src="./images/icon-cross.svg" alt="" />
             </button>

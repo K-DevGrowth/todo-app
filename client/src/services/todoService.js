@@ -36,7 +36,7 @@ export const deleteTodo = async (id) => {
   }
 };
 
-export const updatedTodo = async ({ id, updatedTodo }) => {
+export const updateTodo = async ({ id, updatedTodo }) => {
   const options = {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -62,7 +62,7 @@ export const deleteTodos = async () => {
   }
 };
 
-export const reorders = async ({id, newOrder}) => {
+export const reorderTodo = async ({id, newOrder}) => {
   const res = await fetch(`${baseUrl}/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },

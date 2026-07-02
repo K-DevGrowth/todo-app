@@ -39,13 +39,15 @@ export const createTodo = async (req, res, next) => {
       data: todo,
     });
   } catch (error) {
-    console.log("error:", error.message);
     next(error);
   }
 };
 
 export const updatedTodo = async (req, res, next) => {
-  const todo = await Todo.findByIdAndUpdate(req.params.id, req.body);
+  const todo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
   res.status(200).json({
     success: true,

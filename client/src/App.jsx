@@ -67,6 +67,7 @@ const App = () => {
             onClick={() => setDarkMode(!darkMode)}
             type="button"
             className="cursor-pointer"
+            aria-label={`toggle ${darkMode ? "light" : "dark"} mode`}
           >
             {darkMode ? (
               <img src="./images/icon-sun.svg" alt="" />

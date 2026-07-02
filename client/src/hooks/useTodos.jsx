@@ -4,9 +4,9 @@ import {
   deleteTodo,
   deleteTodos,
   getTodos,
-  reorders,
-  updatedTodo,
-} from "../requests";
+  reorderTodo,
+  updateTodo,
+} from "../services/todoService";
 
 export const useTodos = () => {
   const queryClient = useQueryClient();
@@ -32,7 +32,7 @@ export const useTodos = () => {
   });
 
   const updateTodoMutation = useMutation({
-    mutationFn: updatedTodo,
+    mutationFn: updateTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
@@ -46,7 +46,7 @@ export const useTodos = () => {
   });
 
   const reorderMutation = useMutation({
-    mutationFn: reorders,
+    mutationFn: reorderTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },

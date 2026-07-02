@@ -110,6 +110,7 @@ const TodoList = ({
               type="button"
               key={item}
               onClick={() => setFilter(item)}
+              aria-pressed={filter === item}
               className={`${filter === item ? "text-Blue-500" : "hover:text-Navy-850"}`}
             >
               {item}

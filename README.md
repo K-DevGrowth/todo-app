@@ -33,7 +33,7 @@ Users should be able to:
 
 ### Screenshot
 
-![image](client\public\images\screenshot.png)
+![image](./client/public/images/screenshot.png)
 
 
 ### Links

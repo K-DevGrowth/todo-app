@@ -62,7 +62,7 @@ export const deleteTodos = async () => {
   }
 };
 
-export const reorders = async (id, newOrder) => {
+export const reorders = async ({id, newOrder}) => {
   const res = await fetch(`${baseUrl}/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },

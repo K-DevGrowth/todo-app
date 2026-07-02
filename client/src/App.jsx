@@ -35,12 +35,12 @@ const App = () => {
       {darkMode ? (
         <>
           <img
-            className="absolute top-0 max-sm:hidden"
+            className="absolute top-0 max-[376px]:hidden"
             src="./images/bg-desktop-dark.jpg"
             alt=""
           />
           <img
-            className="absolute top-0 sm:hidden"
+            className="absolute top-0 min-[376px]:hidden"
             src="./images/bg-mobile-dark.jpg"
             alt=""
           />
@@ -48,12 +48,12 @@ const App = () => {
       ) : (
         <>
           <img
-            className="absolute top-0 max-sm:hidden"
+            className="absolute top-0 max-[376px]:hidden"
             src="./images/bg-desktop-light.jpg"
             alt=""
           />
           <img
-            className="absolute top-0 sm:hidden"
+            className="absolute top-0 min-[376px]:hidden"
             src="./images/bg-mobile-light.jpg"
             alt=""
           />

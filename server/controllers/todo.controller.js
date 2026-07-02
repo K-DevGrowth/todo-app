@@ -1,7 +1,7 @@
 import Todo from "../models/todo.model.js";
 
 export const getTodos = async (req, res, next) => {
-  const todos = await Todo.find({});
+  const todos = await Todo.find().sort({ order: 1 });
 
   res.status(200).json({
     success: true,
@@ -25,10 +25,14 @@ export const getTodo = async (req, res, next) => {
 };
 
 export const createTodo = async (req, res, next) => {
-  const { name, completed } = req.body;
+  const { name } = req.body;
 
   try {
-    const todo = await Todo.create({ name, completed });
+    const lastTodo = await Todo.findOne().sort({ order: -1 });
+    const newOrder = lastTodo ? lastTodo.order + 1 : 0;
+
+    const todo = await Todo.create({ name, completed: false, order: newOrder });
+
     res.status(201).json({
       success: true,
       message: "Todo created successfully",

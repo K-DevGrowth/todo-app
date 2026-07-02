@@ -61,6 +61,7 @@ export const useTodos = () => {
     toggleCompletedTodo: (id, completed) =>
       updateTodoMutation.mutate({ id, updatedTodo: { completed: !completed } }),
     deleteCompletedTodos: () => deletedTodosMutation.mutate(),
-    reorderTodoMutation: (newOrder) => reorderMutation.mutate(newOrder),
+    reorderTodoMutation: (id, newOrder) =>
+      reorderMutation.mutate({ id, newOrder }),
   };
 };

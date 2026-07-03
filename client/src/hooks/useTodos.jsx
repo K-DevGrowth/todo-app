@@ -53,7 +53,7 @@ export const useTodos = () => {
   });
 
   return {
-    data: result.data,
+    todos: result.data,
     isPending: result.isPending,
     error: result.error,
     addTodo: (name) => newTodoMutation.mutate({ name, completed: false }),

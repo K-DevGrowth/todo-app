@@ -1,13 +1,20 @@
 import { useRef, useState } from "react";
+import { useTodos } from "../hooks/useTodos";
+import { useTheme } from "../hooks/useTheme";
 
-const TodoList = ({
-  todos,
-  onDelete,
-  onTogglableCompleted,
-  onCompletedDelete,
-  onReorderTodoMutation,
-  darkMode,
-}) => {
+const TodoList = () => {
+  const { theme } = useTheme();
+
+  const {
+    todos,
+    isPending,
+    error,
+    deleteTodo,
+    toggleCompletedTodo,
+    deleteCompletedTodos,
+    reorderTodoMutation,
+  } = useTodos();
+
   const [filter, setFilter] = useState("All");
   const dragIndex = useRef();
 
@@ -53,12 +60,16 @@ const TodoList = ({
       newOrder = (prevOrder + nextOrder) / 2;
     }
 
-    onReorderTodoMutation(draggedTodo._id, newOrder);
+    reorderTodoMutation(draggedTodo._id, newOrder);
   };
 
   const handleClearCompleted = () => {
-    onCompletedDelete();
+    deleteCompletedTodos();
   };
+
+  if (isPending) return "Loading...";
+
+  if (error) return "An error has occurred: " + error.message;
 
   return (
     <div className="w-full max-w-100 mt-4 shadow-xl">
@@ -70,7 +81,7 @@ const TodoList = ({
             onDrop={() => handleDrop(todo, index)}
             draggable={true}
             key={todo._id}
-            className={`flex justify-between items-center border-b border-Gray-300 px-4 py-3 ${darkMode ? "bg-Navy-900 text-white" : "bg-white"}`}
+            className={`flex justify-between items-center border-b border-Gray-300 px-4 py-3 ${theme === "dark" ? "bg-Navy-900 text-white" : "bg-white"}`}
           >
             <div className="flex items-center gap-x-4">
               <input
@@ -78,7 +89,7 @@ const TodoList = ({
                 id={`todo-${todo._id}`}
                 className="cursor-pointer"
                 checked={todo.completed}
-                onChange={() => onTogglableCompleted(todo._id, todo.completed)}
+                onChange={() => toggleCompletedTodo(todo._id, todo.completed)}
               />
               <label
                 htmlFor={`todo-${todo._id}`}
@@ -89,7 +100,7 @@ const TodoList = ({
             </div>
             <button
               type="button"
-              onClick={() => onDelete(todo._id)}
+              onClick={() => deleteTodo(todo._id)}
               className="cursor-pointer"
               aria-label={`Delete "${todo.name}"`}
             >
@@ -99,7 +110,7 @@ const TodoList = ({
         ))}
       </div>
       <div
-        className={`text-[12px] text-Gray-600 font-medium flex justify-between items-center py-2 px-3 ${darkMode ? "bg-Navy-900" : "bg-white"}`}
+        className={`text-[12px] text-Gray-600 font-medium flex justify-between items-center py-2 px-3 ${theme === "dark" ? "bg-Navy-900" : "bg-white"}`}
       >
         <p>
           {todos.data.filter((t) => t.completed === false).length} items left
